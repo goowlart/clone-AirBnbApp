@@ -22,6 +22,13 @@ export default class SignIn extends Component {
         header: null,
     };
 
+    static propTypes = { //In this component you need to pass a navigation object that contains the navigate and dispatch functions.
+      navigation: PropTypes.shape({
+        navigate: PropTypes.func,
+        dispatch: PropTypes.func,
+      }).isRequired,
+    };
+
     state = { email: '', password: '', error: '' };
 
     handleEmailChange = (email) => {
@@ -38,7 +45,7 @@ export default class SignIn extends Component {
 
     handleSignInPress = async () => {
         if (this.state.email.length === 0 || this.state.password.length === 0) {
-          this.setState({ error: 'Preencha usuário e senha para continuar!' }, () => false);
+          this.setState({ error: 'Fill in username and password to continue!' }, () => false);
         } else {
           try {
             const response = await api.post('/sessions', { //Assign to a constant the return of sending a POST request to the route / sessions of the API with the email and password in the request body;
@@ -56,7 +63,7 @@ export default class SignIn extends Component {
             });
             this.props.navigation.dispatch(resetAction); //Dispatch in this constant containing the reset instructions.
           } catch (_err) {
-            this.setState({ error: 'Houve um problema com o login, verifique suas credenciais!' });
+            this.setState({ error: 'There was a problem with the login, check your credentials!' });
           }
         }
     };
